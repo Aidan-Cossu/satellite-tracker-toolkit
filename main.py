@@ -12,6 +12,7 @@ from visualization.charts import plot_velocity_over_time, plot_altitude_over_tim
 from satellites.loader.database_loader import load_database
 from satellites.loader.external_importer import import_csv
 from satellites.validation import validate_satellites
+from utils.helpers import format_duration
 
 def load_data():
     print("┍─────────────────────────────────────────┑")
@@ -208,7 +209,10 @@ def analysis_menu(satellites):
         print("│    Most Satellite Observations    │")
         print("┖───────────────────────────────────┛")
 
-        print(f"Most satellite observations: {round(most_satellite_observations(satellites), 3)}")
+        most_observed, observation_count = most_satellite_observations(satellites)
+
+        print(f"Satellite: {most_observed}")
+        print(f"Observations: {observation_count}")
 
     elif analysis_choice == "7":
         print("┍────────────────────────────┑")
@@ -216,8 +220,9 @@ def analysis_menu(satellites):
         print("┖────────────────────────────┛")
 
         name = get_satellite_name(satellites)
+        duration = observation_duration(satellites, name)
 
-        print(f"Observation duration: {round(observation_duration(satellites, name), 3)}")
+        print(f"Observation duration: {format_duration(duration)}")
 
     elif analysis_choice == "8":
         print("┍──────────────────────────────────────┑")
@@ -226,7 +231,7 @@ def analysis_menu(satellites):
 
         name = get_satellite_name(satellites)
 
-        print(f"Duration between observations: {round(duration_between_observations(satellites, name), 3)}")
+        print(f"Duration between observations: {duration_between_observations(satellites, name)}")
 
     elif analysis_choice == "9":
         print("┍─────────────────────────────────────────┑")
@@ -234,8 +239,9 @@ def analysis_menu(satellites):
         print("┖─────────────────────────────────────────┛")
 
         name = get_satellite_name(satellites)
+        average_time = average_time_between_observations(satellites, name)
 
-        print(f"Average time between observations: {round(average_time_between_observations(satellites, name), 3)}")
+        print(f"Average time between observations: {format_duration(average_time)}")
 
     elif analysis_choice == "10":
         print("┍─────────────────────────────────────────┑")
@@ -243,8 +249,9 @@ def analysis_menu(satellites):
         print("┖─────────────────────────────────────────┛")
 
         name = get_satellite_name(satellites)
+        minimum_time = minimum_time_between_observations(satellites, name)
 
-        print(f"Minimum time between observations: {round(minimum_time_between_observations(satellites, name), 3)}")
+        print(f"Minimum time between observations: {format_duration(minimum_time)}")
 
     elif analysis_choice == "11":
         print("┍─────────────────────────────────────────┑")
@@ -252,8 +259,9 @@ def analysis_menu(satellites):
         print("┖─────────────────────────────────────────┛")
 
         name = get_satellite_name(satellites)
+        maximum_time = maximum_time_between_observations(satellites, name)
 
-        print(f"Maximum time between observations: {round(maximum_time_between_observations(satellites, name), 3)}")
+        print(f"Maximum time between observations: {format_duration(maximum_time)}")
 
     elif analysis_choice == "12":
         print("┍───────────────────────────────┑")
@@ -381,7 +389,15 @@ def analysis_menu(satellites):
         expected_interval = timedelta(minutes=expected_interval_input)
         tolerance = timedelta(minutes=tolerance_input)
 
-        print(detect_irregular_observations(satellites, name, expected_interval, tolerance))
+        irregular = detect_irregular_observations(satellites, name, expected_interval, tolerance)
+
+        if not irregular:
+            print("No irregular observations detected.")
+        else:
+            print(f"{len(irregular)} irregular observations detected.")
+
+            for i, duration in enumerate(irregular, start=1):
+                print(f"{i}. {format_duration(duration)}")
 
     elif analysis_choice == "0":
         pass
@@ -443,6 +459,3 @@ def get_satellite_name(satellites):
 
 if __name__ == "__main__":
     main()
-
-
-

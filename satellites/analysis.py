@@ -7,10 +7,10 @@ def average_altitude(satellites):
     return sum(satellite.altitude_in_km for satellite in satellites) / len(satellites)
 
 def highest_altitude(satellites):
-    return max(satellites, key=lambda satellite: satellite.altitude_in_km)
+    return max(satellite.altitude_in_km for satellite in satellites)
 
 def lowest_altitude(satellites):
-    return min(satellites, key=lambda satellite: satellite.altitude_in_km)
+    return min(satellite.altitude_in_km for satellite in satellites)
 
 def average_velocity(satellites):
     return sum(satellite.velocity for satellite in satellites) / len(satellites)
