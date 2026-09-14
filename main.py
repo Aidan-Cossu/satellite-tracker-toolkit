@@ -86,14 +86,37 @@ def main():
             break
 
 def statistics_menu(satellites):
-    print("┍───────────────────────────────┑")
-    print("│    Enter name of satellite    │")
-    print("┖───────────────────────────────┛")
+    name = get_satellite_name(satellites)
+    statistics = get_statistics(satellites, name)
 
-    user_satellite_input = input("")
-    statistics = get_statistics(satellites, user_satellite_input)
+    general = statistics["general"]
+    satellite = statistics["satellite"]
 
-    print(statistics)
+    print()
+    print("┍────────────────────────────────────────┑")
+    print("│           General Statistics           │")
+    print("┖────────────────────────────────────────┛")
+    print()
+
+    print(f"Total observations:            {general['total_observations']}")
+    print(f"Unique satellites:             {general['unique_satellites']}")
+
+    most_name, most_count = general["most_observations"]
+    print(f"Most observations:             {most_name} ({most_count})")
+
+    print()
+    print("┍────────────────────────────────────────┑")
+    print(f"│       {satellite['name']} Statistics         │")
+    print("┖────────────────────────────────────────┛")
+    print()
+
+    print(f"Observations:                 {satellite['observations']}")
+    print(f"Average altitude:             {satellite['average_altitude']:.2f} km")
+    print(f"Highest altitude:             {satellite['highest_altitude']:.2f} km")
+    print(f"Lowest altitude:              {satellite['lowest_altitude']:.2f} km")
+    print(f"Average velocity:             {satellite['average_velocity']:.2f} km/s")
+    print(f"Average observation interval: {format_duration(satellite['average_interval'])}")
+    print(f"Average movement:             {satellite['average_movement']:.2f} km")
 
 def search_menu(satellites):
     print("┍────────────────────────────────────┑")
@@ -110,9 +133,9 @@ def search_menu(satellites):
         print("┖───────────────────────────────┛")
 
         user_satellite_input = input("")
-        satellite = search_by_name(satellites, user_satellite_input)
 
-        print(satellite)
+        result = search_by_name(satellites, user_satellite_input)
+        display_search_results(result)
 
     elif search_choice == "2":
         print("┍───────────────────────────────┑")
@@ -125,9 +148,8 @@ def search_menu(satellites):
             print("Invalid input. Please enter a number.")
             return
 
-        satellite = search_by_norad_id(satellites, user_satellite_input)
-
-        print(satellite)
+        result = search_by_norad_id(satellites, user_satellite_input)
+        display_search_results(result)
 
     elif search_choice == "3":
         print("┍───────────────────────────────┑")
@@ -140,9 +162,8 @@ def search_menu(satellites):
             print("invalid input. Please enter a number.")
             return
 
-        satellite = search_by_sat_id(satellites, user_satellite_input)
-
-        print(satellite)
+        result = search_by_sat_id(satellites, user_satellite_input)
+        display_search_results(result)
 
 def analysis_menu(satellites):
     print("┍───────────────────────────────────────────────────┑")
@@ -417,6 +438,35 @@ def plot_movement(satellites):
 
     plot_movement_over_time(satellites, name)
 
+def display_search_results(satellites):
+    if not satellites:
+        print()
+        print("No matching satellites found.")
+        return
+
+    print()
+    print("┍────────────────────────────────────────┑")
+    print("│              Search Results            │")
+    print("┖────────────────────────────────────────┛")
+    print()
+
+    print(f"Found {len(satellites)} observations.")
+    print()
+
+    results_to_show = satellites[:10]
+
+    for index, satellite in enumerate(results_to_show, start=1):
+        print(f"{index}. {satellite.name}")
+        print(f"   NORAD ID:   {satellite.norad_id}")
+        print(f"   Satellite ID: {satellite.sat_id}")
+        print(f"   Time:       {satellite.timeline}")
+        print(f"   Latitude:   {satellite.latitude:.2f}°")
+        print(f"   Longitude:  {satellite.longitude:.2f}°")
+        print(f"   Altitude:   {satellite.altitude_in_km:.2f} km")
+        print()
+
+    if len(satellites) > 10:
+        print(f"Showing 10 of {len(satellites)} observations.")
 
 def export_menu(satellites):
     print("┍────────────────────────────────────┑")
