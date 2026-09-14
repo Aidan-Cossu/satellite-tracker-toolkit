@@ -8,12 +8,39 @@ from satellites.analysis import average_altitude, highest_altitude, lowest_altit
     maximum_movement_per_observation, detect_irregular_observations, distance_between_observations
 from satellites.search import search_by_name, search_by_norad_id, search_by_sat_id
 from satellites.statistics import get_statistics
-from satellites.validation import clean_satellites, Satellite
 from visualization.charts import plot_velocity_over_time, plot_altitude_over_time, plot_movement_over_time
+from satellites.loader.database_loader import load_database
+from satellites.loader.external_importer import import_csv
+from satellites.validation import validate_satellites
 
+def load_data():
+    print("┍─────────────────────────────────────────┑")
+    print("│       Select data source:               │")
+    print("│                                         │")
+    print("│       1. Satellite Tracker database     │")
+    print("│       2. Import external CSV data       │")
+    print("└─────────────────────────────────────────┘")
+
+    choice = input("Choose an option: ")
+
+    if choice == "1":
+        satellites = load_database()
+
+    elif choice == "2":
+        filename = input("Enter CSV filename: ")
+        satellites = import_csv(filename)
+
+    else:
+        print("Invalid option.")
+        return None
+
+    return validate_satellites(satellites)
 
 def main():
-    satellites = clean_satellites()
+    satellites = load_data()
+
+    if satellites is None:
+        return
 
     while True:
 

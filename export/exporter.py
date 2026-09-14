@@ -1,8 +1,5 @@
 import csv
 
-from satellites.validation import Satellite
-
-
 def export_satellite_records_csv(satellites, filename):
     with open(filename, 'w', newline="") as csvfile:
         writer = csv.writer(csvfile)

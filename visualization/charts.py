@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
 
-from satellites.analysis import average_movement_per_observation, distance_between_observations
+from satellites.analysis import distance_between_observations
 from satellites.search import search_by_name
-
 
 def plot_altitude_over_time(satellites, name):
     observations = search_by_name(satellites, name)
