@@ -1,8 +1,10 @@
 def search_by_sat_id(satellites, satellite_id):
-    return [satellite for satellite in satellites if satellite_id == satellite.sat_id]
+    return [satellite for satellite in satellites if satellite.sat_id == satellite_id]
 
 def search_by_norad_id(satellites, norad_id):
-    return [satellite for satellite in satellites if norad_id == satellite.norad_id]
+    return [satellite for satellite in satellites if satellite.norad_id == norad_id]
 
 def search_by_name(satellites, name):
-    return [satellite for satellite in satellites if name.lower() == satellite.name.lower()]
+    name = name.strip().lower()
+
+    return [satellite for satellite in satellites if satellite.name.strip().lower() == name]

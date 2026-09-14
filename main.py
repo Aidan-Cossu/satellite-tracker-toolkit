@@ -21,6 +21,7 @@ def load_data():
     print("│       2. Import external CSV data       │")
     print("└─────────────────────────────────────────┘")
 
+
     choice = input("Choose an option: ")
 
     if choice == "1":
@@ -117,7 +118,12 @@ def search_menu(satellites):
         print("│  Enter noradID of satellite   │")
         print("┖───────────────────────────────┛")
 
-        user_satellite_input = int(input(""))
+        try:
+            user_satellite_input = int(input(""))
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+            return
+
         satellite = search_by_norad_id(satellites, user_satellite_input)
 
         print(satellite)
@@ -127,7 +133,12 @@ def search_menu(satellites):
         print("│   Enter satID of satellite    │")
         print("┖───────────────────────────────┛")
 
-        user_satellite_input = int(input(""))
+        try:
+            user_satellite_input = int(input(""))
+        except ValueError:
+            print("invalid input. Please enter a number.")
+            return
+
         satellite = search_by_sat_id(satellites, user_satellite_input)
 
         print(satellite)
@@ -156,61 +167,109 @@ def analysis_menu(satellites):
     analysis_choice = input("Choose an option: ")
 
     if analysis_choice == "1":
-        print(average_altitude(satellites))
+        print("┍────────────────────────┑")
+        print("│    Average Altitude    │")
+        print("┖────────────────────────┛")
+
+        print(f"Average altitude: {round(average_altitude(satellites), 3)} km")
 
     elif analysis_choice == "2":
-        print(highest_altitude(satellites))
+        print("┍────────────────────────┑")
+        print("│    Highest Altitude    │")
+        print("┖────────────────────────┛")
+
+        print(f"Highest altitude: {round(highest_altitude(satellites), 3)} km")
 
     elif analysis_choice == "3":
-        print(lowest_altitude(satellites))
+        print("┍────────────────────────┑")
+        print("│     Lowest Altitude    │")
+        print("┖────────────────────────┛")
+
+        print(f"Lowest altitude: {round(lowest_altitude(satellites), 3)} km")
 
     elif analysis_choice == "4":
-        print(average_velocity(satellites))
+        print("┍────────────────────────┑")
+        print("│    Average Velocity    │")
+        print("┖────────────────────────┛")
+
+        print(f"Average velocity: {round(average_velocity(satellites), 3)} km/s")
 
     elif analysis_choice == "5":
-        name = get_satellite_name()
+        print("┍────────────────────────────┑")
+        print("│    Altitude Fluctuation    │")
+        print("┖────────────────────────────┛")
 
-        print(satellite_altitude_fluctuation(satellites, name))
+        name = get_satellite_name(satellites)
+
+        print(f"Altitude fluctuation: {round(satellite_altitude_fluctuation(satellites, name), 3)}")
 
     elif analysis_choice == "6":
-        print(most_satellite_observations(satellites))
+        print("┍───────────────────────────────────┑")
+        print("│    Most Satellite Observations    │")
+        print("┖───────────────────────────────────┛")
+
+        print(f"Most satellite observations: {round(most_satellite_observations(satellites), 3)}")
 
     elif analysis_choice == "7":
-        name = get_satellite_name()
+        print("┍────────────────────────────┑")
+        print("│    Observation Duration    │")
+        print("┖────────────────────────────┛")
 
-        print(observation_duration(satellites, name))
+        name = get_satellite_name(satellites)
+
+        print(f"Observation duration: {round(observation_duration(satellites, name), 3)}")
 
     elif analysis_choice == "8":
-        name = get_satellite_name()
+        print("┍──────────────────────────────────────┑")
+        print("│     Duration Between Observations    │")
+        print("┖──────────────────────────────────────┛")
 
-        print(duration_between_observations(satellites, name))
+        name = get_satellite_name(satellites)
+
+        print(f"Duration between observations: {round(duration_between_observations(satellites, name), 3)}")
 
     elif analysis_choice == "9":
-        name = get_satellite_name()
+        print("┍─────────────────────────────────────────┑")
+        print("│    Average Time Between Observations    │")
+        print("┖─────────────────────────────────────────┛")
 
-        print(average_time_between_observations(satellites, name))
+        name = get_satellite_name(satellites)
+
+        print(f"Average time between observations: {round(average_time_between_observations(satellites, name), 3)}")
 
     elif analysis_choice == "10":
-        name = get_satellite_name()
+        print("┍─────────────────────────────────────────┑")
+        print("│    Minimum Time Between Observations    │")
+        print("┖─────────────────────────────────────────┛")
 
-        print(minimum_time_between_observations(satellites, name))
+        name = get_satellite_name(satellites)
+
+        print(f"Minimum time between observations: {round(minimum_time_between_observations(satellites, name), 3)}")
 
     elif analysis_choice == "11":
-        name = get_satellite_name()
+        print("┍─────────────────────────────────────────┑")
+        print("│    Maximum Time Between Observations    │")
+        print("┖─────────────────────────────────────────┛")
 
-        print(maximum_time_between_observations(satellites, name))
+        name = get_satellite_name(satellites)
+
+        print(f"Maximum time between observations: {round(maximum_time_between_observations(satellites, name), 3)}")
 
     elif analysis_choice == "12":
         print("┍───────────────────────────────┑")
         print("│    Enter name of satellite 1  │")
         print("┖───────────────────────────────┛")
 
-        user_satellite_input1 = input("")
+        user_satellite_input1 = get_satellite_name(satellites)
         satellite1_observations = search_by_name(satellites, user_satellite_input1)
 
         if not satellite1_observations:
             print("No observations found.")
             return
+
+        print("┍────────────────────────────┑")
+        print("│     Satellite Timeline     │")
+        print("┖────────────────────────────┛")
 
         for i, satellite in enumerate(satellite1_observations, start=1):
             print(f"{i}. {satellite.timeline}")
@@ -219,7 +278,11 @@ def analysis_menu(satellites):
         print("│    Enter observation number   │")
         print("┖───────────────────────────────┛")
 
-        observation1 = int(input("")) - 1
+        try:
+            observation1 = int(input("")) - 1
+        except ValueError:
+            print("Invalid input. Please enter a number")
+            return
 
         if observation1 < 0 or observation1 >= len(satellite1_observations):
             print("Invalid observation number.")
@@ -231,12 +294,16 @@ def analysis_menu(satellites):
         print("│    Enter name of satellite 2  │")
         print("┖───────────────────────────────┛")
 
-        user_satellite_input2 = input("")
+        user_satellite_input2 = get_satellite_name(satellites)
         satellite2_observations = search_by_name(satellites, user_satellite_input2)
 
         if not satellite2_observations:
             print("No observations found.")
             return
+
+        print("┍────────────────────────────┑")
+        print("│     Satellite Timeline     │")
+        print("┖────────────────────────────┛")
 
         for i, satellite in enumerate(satellite2_observations, start=1):
             print(f"{i}. {satellite.timeline}")
@@ -245,7 +312,11 @@ def analysis_menu(satellites):
         print("│    Enter observation number   │")
         print("┖───────────────────────────────┛")
 
-        observation2 = int(input("")) - 1
+        try:
+            observation2 = int(input("")) - 1
+        except ValueError:
+            print("Invalid input. Please enter a number")
+            return
 
         if observation2 < 0 or observation2 >= len(satellite2_observations):
             print("Invalid observation number.")
@@ -258,34 +329,54 @@ def analysis_menu(satellites):
         print(result)
 
     elif analysis_choice == "13":
-        name = get_satellite_name()
+        print("┍──────────────────────────────────────────┑")
+        print("│     Average Movement Per Observation     │")
+        print("┖──────────────────────────────────────────┛")
 
-        print(average_movement_per_observation(satellites, name))
+        name = get_satellite_name(satellites)
+
+        print(f"Average movement per observation: {round(average_movement_per_observation(satellites, name), 3)} km")
 
     elif analysis_choice == "14":
-        name = get_satellite_name()
+        print("┍──────────────────────────────────────────┑")
+        print("│     Minimum Movement Per Observation     │")
+        print("┖──────────────────────────────────────────┛")
 
-        print(minimum_movement_per_observation(satellites, name))
+        name = get_satellite_name(satellites)
+
+        print(f"Minimum movement per observation: {round(minimum_movement_per_observation(satellites, name), 3)} km")
 
     elif analysis_choice == "15":
-        name = get_satellite_name()
+        print("┍──────────────────────────────────────────┑")
+        print("│     Maximum Movement Per Observation     │")
+        print("┖──────────────────────────────────────────┛")
 
-        print(maximum_movement_per_observation(satellites, name))
+        name = get_satellite_name(satellites)
+
+        print(f"Maximum movement per observation: {round(maximum_movement_per_observation(satellites, name), 3)} km")
 
     elif analysis_choice == "16":
-        name = get_satellite_name()
+        name = get_satellite_name(satellites)
 
         print("┍───────────────────────────────┑")
         print("│   Expected interval (minutes) │")
         print("┖───────────────────────────────┛")
 
-        expected_interval_input = float(input(""))
+        try:
+            expected_interval_input = float(input(""))
+        except ValueError:
+            print("Invalid input. Please enter a number")
+            return
 
         print("┍───────────────────────────────┑")
         print("│   Enter tolerance (minutes)   │")
         print("┖───────────────────────────────┛")
 
-        tolerance_input = float(input(""))
+        try:
+            tolerance_input = float(input(""))
+        except ValueError:
+            print("Invalid input. Please enter a number")
+            return
 
         expected_interval = timedelta(minutes=expected_interval_input)
         tolerance = timedelta(minutes=tolerance_input)
@@ -296,17 +387,17 @@ def analysis_menu(satellites):
         pass
 
 def plot_velocity(satellites):
-    name = get_satellite_name()
+    name = get_satellite_name(satellites)
 
     plot_velocity_over_time(satellites, name)
 
 def plot_altitude(satellites):
-    name = get_satellite_name()
+    name = get_satellite_name(satellites)
 
     plot_altitude_over_time(satellites, name)
 
 def plot_movement(satellites):
-    name = get_satellite_name()
+    name = get_satellite_name(satellites)
 
     plot_movement_over_time(satellites, name)
 
@@ -335,12 +426,20 @@ def export_menu(satellites):
     elif export_choice == "0":
         pass
 
-def get_satellite_name():
+def get_satellite_name(satellites):
+    names = sorted(set(satellite.name for satellite in satellites))
+
     print("┍───────────────────────────────┑")
-    print("│    Enter name of satellite    │")
+    print("│      Available satellites     │")
     print("┖───────────────────────────────┛")
 
-    return input("")
+    for name in names:
+        print(f"  - {name}")
+
+    print()
+    print("Enter name of satellite:")
+
+    return input("").strip()
 
 if __name__ == "__main__":
     main()
