@@ -29,7 +29,7 @@ The toolkit is intentionally separate from the Java application. The Java applic
 - SQL data exported from the Java application
 
 ## Future Development
-The toolkit will eventually be used to validate and analyse the output of my future C++ Orbit Propagation Engine.
+The toolkit will eventually be used to also validate and analyse the output of my future C++ Orbit Propagation Engine.
 
 ## Related Projects
 

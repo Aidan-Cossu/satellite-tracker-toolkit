@@ -128,13 +128,13 @@ def search_menu(satellites):
     search_choice = input("")
 
     if search_choice == "1":
+        name = get_satellite_name(satellites)
+
         print("┍───────────────────────────────┑")
         print("│    Enter name of satellite    │")
         print("┖───────────────────────────────┛")
 
-        user_satellite_input = input("")
-
-        result = search_by_name(satellites, user_satellite_input)
+        result = search_by_name(satellites, name)
         display_search_results(result)
 
     elif search_choice == "2":
@@ -484,9 +484,11 @@ def export_menu(satellites):
         return result
 
     elif export_choice == "2":
+        name = get_satellite_name(satellites)
+
         filename_analysis = input("Enter filename of records: ")
 
-        result = export_analysis_records_csv(satellites, filename_analysis)
+        result = export_analysis_records_csv(satellites, name, filename_analysis)
         return result
 
     elif export_choice == "0":
