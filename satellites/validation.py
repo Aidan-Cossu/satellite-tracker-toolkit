@@ -1,18 +1,16 @@
+
 from datetime import datetime
+
 
 def validate_satellites(satellites):
 
     for satellite in satellites:
 
         if satellite.sat_id is None or not isinstance(satellite.sat_id, int):
-            raise ValueError(
-                "Every satellite must have a unique satellite id, and must be an integer"
-            )
+            raise ValueError("Every satellite must have a satellite id, and it must be an integer")
 
         if satellite.norad_id is None or not isinstance(satellite.norad_id, int):
-            raise ValueError(
-                "Every satellite must have a unique NORAD id, and it must be an integer"
-            )
+            raise ValueError("Every satellite must have a NORAD id, and it must be an integer")
 
         if satellite.name is None or not isinstance(satellite.name, str):
             raise ValueError("Every satellite must have a name")

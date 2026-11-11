@@ -2,7 +2,7 @@ import csv
 from satellites.statistics import get_statistics
 
 def export_satellite_records_csv(satellites, filename):
-    with open(filename, 'w', newline="") as csvfile:
+    with open(filename, 'w', newline="", encoding="utf-8") as csvfile:
         writer = csv.writer(csvfile)
 
         writer.writerow([
@@ -32,20 +32,22 @@ def export_satellite_records_csv(satellites, filename):
                 satellite.location
             ])
 
-def export_analysis_records_csv(satellites, name, filename):
-    statistics = get_statistics(satellites, name)
+def export_analysis_records_csv(satellites, satellites_by_name, name, filename):
+    statistics = get_statistics(satellites, satellites_by_name, name)
 
-    with open(filename, 'w', newline="", encoding="utf=8") as csvfile:
+    with open(filename, 'w', newline="", encoding="utf-8") as csvfile:
         writer = csv.writer(csvfile)
 
         writer.writerow([
             "total_observations",
             "unique_satellites",
+            "most_satellite_observations",
+            "most_observed_count"
+            "satellite_name"
             "average_altitude",
             "highest_altitude",
             "lowest_altitude",
             "average_velocity",
-            "most_satellite_observations",
             "average_observation_interval",
             "average_movement"
         ])
@@ -53,10 +55,14 @@ def export_analysis_records_csv(satellites, name, filename):
         general = statistics["general"]
         satellite = statistics["satellite"]
 
+        most_name, most_count = general["most_observations"]
+
         writer.writerow([
             general["total_observations"],
             general["unique_satellites"],
-            general["most_observations"],
+            most_name,
+            most_count,
+            satellite["name"],
             satellite["average_altitude"],
             satellite["highest_altitude"],
             satellite["lowest_altitude"],

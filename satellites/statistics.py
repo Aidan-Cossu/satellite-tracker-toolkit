@@ -3,7 +3,7 @@ from satellites.analysis import average_altitude, highest_altitude, lowest_altit
 from satellites.search import search_by_name
 
 
-def get_statistics(satellites, name):
+def get_statistics(satellites, satellites_by_name, name):
     satellite_observations = search_by_name(satellites, name)
 
     return {
@@ -20,7 +20,7 @@ def get_statistics(satellites, name):
             "highest_altitude": highest_altitude(satellite_observations),
             "lowest_altitude": lowest_altitude(satellite_observations),
             "average_velocity": average_velocity(satellite_observations),
-            "average_interval": average_time_between_observations(satellites, name),
-            "average_movement": average_movement_per_observation(satellites, name)
+            "average_interval": average_time_between_observations(satellites_by_name[name]),
+            "average_movement": average_movement_per_observation(satellites_by_name[name])
         }
     }

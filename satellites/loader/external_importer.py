@@ -17,9 +17,7 @@ def import_csv(filename):
                 latitude=float(row["latitude"]),
                 longitude=float(row["longitude"]),
                 altitude_in_km=float(row["altitude_in_km"]),
-                timeline=datetime.fromisoformat(
-                    row["timeline"].split("[")[0]
-                ),
+                timeline=datetime.fromisoformat(row["timeline"].split("[")[0]),
                 velocity=float(row["velocity"]),
                 visibility=row["visibility"],
                 location=row["location"]

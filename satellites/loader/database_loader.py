@@ -15,9 +15,7 @@ def load_database():
             latitude=row[3],
             longitude=row[4],
             altitude_in_km=row[5],
-            timeline=datetime.fromisoformat(
-                row[6].split("[")[0]
-            ),
+            timeline=datetime.fromisoformat(row[6].split("[")[0]),
             velocity=row[7],
             visibility=row[8],
             location=row[9]
